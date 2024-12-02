@@ -29,7 +29,6 @@ program worker
                 eigenvalues(j + 5*(i-init)) = payload(j)*i
             end do
         end do
-        call sleep(1)
         
         call MPI_GATHERV(eigenvalues, 5*(final-init+1), MPI_INTEGER, MPI_IN_PLACE, 0, 0, MPI_DATATYPE_NULL, 0, parentcomm, ierr)
         ! wait for the stop signal
@@ -40,6 +39,6 @@ program worker
     end do
     deallocate(eigenvalues, payload)
     write(*,*) 'Worker ', rank, ' of ', size, ' is done'
-    call MPI_Comm_disconnect(parentcomm, ierr)
+    
     call MPI_Finalize(ierr)
 end program worker
