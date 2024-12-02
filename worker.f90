@@ -4,7 +4,7 @@ program worker
 
     integer :: ierr, rank, size, parentcomm
     logical :: stop_signal
-    integer :: ntask, i, init, final, j
+    integer :: ntask, i, init, final, j, k
     integer, dimension(:), allocatable :: payload
     integer, dimension(:), allocatable :: eigenvalues
 
@@ -29,6 +29,7 @@ program worker
                 eigenvalues(j + 5*(i-init)) = payload(j)*i
             end do
         end do
+        call sleep(1)
         
         call MPI_GATHERV(eigenvalues, 5*(final-init+1), MPI_INTEGER, MPI_IN_PLACE, 0, 0, MPI_DATATYPE_NULL, 0, parentcomm, ierr)
         ! wait for the stop signal
