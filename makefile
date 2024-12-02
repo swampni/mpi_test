@@ -1,11 +1,12 @@
+
 # Compiler
-FC = ifx
+FC = mpiifx
 
 # Compiler flags
-FFLAGS = -O2
+FFLAGS = -O2 -xHost
 
 # MPI flags
-MPI_FLAGS = -I${MPI_HOME}/include -L${MPI_HOME}/lib -lmpi
+MPI_FLAGS = -lmpi
 
 # Source files
 SRC = main.f90 worker.f90
@@ -18,14 +19,14 @@ all: $(EXE)
 
 # Compile main
 main: main.f90
-    $(FC) $(FFLAGS) $(MPI_FLAGS) -o $@ $<
+	$(FC) $(FFLAGS) $(MPI_FLAGS) -o $@ $<
 
 # Compile worker
 worker: worker.f90
-    $(FC) $(FFLAGS) $(MPI_FLAGS) -o $@ $<
+	$(FC) $(FFLAGS) $(MPI_FLAGS) -o $@ $<
 
 # Clean target
 clean:
-    rm -f $(EXE) *.o *.mod
+	rm -f $(EXE) *.o *.mod
 
 .PHONY: all clean
