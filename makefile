@@ -1,4 +1,3 @@
-
 # Compiler
 FC = mpiifx
 
@@ -9,7 +8,10 @@ FFLAGS = -O2 -xHost
 MPI_FLAGS = -lmpi
 
 # Source files
-SRC = main.f90 worker.f90
+SRC = mpiinfo.f90 main.f90 worker.f90
+
+# Object files
+OBJ = $(SRC:.f90=.o)
 
 # Executables
 EXE = main worker
@@ -18,15 +20,19 @@ EXE = main worker
 all: $(EXE)
 
 # Compile main
-main: main.f90
-	$(FC) $(FFLAGS) $(MPI_FLAGS) -o $@ $<
+main: mpiinfo.o main.o
+	$(FC) $(FFLAGS) $(MPI_FLAGS) -o $@ mpiinfo.o main.o
 
 # Compile worker
-worker: worker.f90
-	$(FC) $(FFLAGS) $(MPI_FLAGS) -o $@ $<
+worker: mpiinfo.o worker.o
+	$(FC) $(FFLAGS) $(MPI_FLAGS) -o $@ mpiinfo.o worker.o
+
+# Compile object files
+%.o: %.f90
+	$(FC) $(FFLAGS) $(MPI_FLAGS) -c $<
 
 # Clean target
 clean:
-	rm -f $(EXE) *.o *.mod
+	rm -f $(EXE) $(OBJ) *.mod
 
 .PHONY: all clean
