@@ -7,7 +7,7 @@ program main
 
     call MPI_Init(ierr)
 
-    do i = 1,2
+    do i = 1,5
         write(*,*) 'Iteration ', i, 'started'
         call manager(2, 10)
         write(*,*) 'Iteration ', i, 'ended'
@@ -38,7 +38,7 @@ subroutine manager(nprocs, ntasks)
     end do   
     counts(nprocs) = ntasks - (nprocs-1)*(ntasks/nprocs)  
 
-    
+    write(*,*) 'Manager will spawn ', nprocs, ' workers'
     call MPI_COMM_SPAWN('./worker', MPI_ARGV_NULL, nprocs, MPI_INFO_NULL, 0, MPI_COMM_WORLD, intercomm, errcodes, ierr)
     
 
@@ -49,7 +49,7 @@ subroutine manager(nprocs, ntasks)
     
     call MPI_GATHERV(MPI_IN_PLACE,0,MPI_DATATYPE_NULL,recvbuf,counts*5,displs*5,MPI_INTEGER,MPI_ROOT,intercomm,ierr)
     print *, recvbuf
-    deallocate(counts, displs, payload)
+    deallocate(counts, displs, payload, recvbuf)
     call MPI_COMM_DISCONNECT(intercomm, ierr)
 
     return    

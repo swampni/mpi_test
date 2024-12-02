@@ -4,7 +4,8 @@ program worker
 
     integer :: ierr, rank, size, parentcomm
     integer :: ntask, i, init, final, j
-    integer, dimension(:), allocatable :: payload, eigenvalues
+    integer, dimension(5) :: payload
+    integer, dimension(25) :: eigenvalues
 
     call MPI_Init(ierr)
     call MPI_COMM_SIZE(MPI_COMM_WORLD, size, ierr)
@@ -15,7 +16,7 @@ program worker
 
     call MPI_BCAST(ntask, 1, MPI_INTEGER, 0, parentcomm, ierr)
 
-    allocate(payload(5), eigenvalues(5*(final-init+1)))
+    ! allocate(eigenvalues(5*(final-init+1)))
     call MPI_BCAST(payload, 5, MPI_INTEGER, 0, parentcomm, ierr)
 
     init = ntask / size * rank + 1
@@ -30,7 +31,6 @@ program worker
     end do
 
     call MPI_GATHERV(eigenvalues, 5*(final-init+1), MPI_INTEGER, MPI_IN_PLACE, 0, 0, MPI_DATATYPE_NULL, 0, parentcomm, ierr)
-
     call MPI_Finalize(ierr)
     
 end program worker
