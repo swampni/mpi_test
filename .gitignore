@@ -2,3 +2,4 @@ main
 worker
 *.o
 *.mod
+dist
