@@ -8,6 +8,8 @@ project(mpitest
 
 find_package(Python REQUIRED COMPONENTS Interpreter Development.Module NumPy)
 find_package(MPI REQUIRED)
+find_package(MKL REQUIRED)
+
 
 # F2PY headers
 execute_process(
@@ -54,11 +56,22 @@ MPI::MPI_Fortran
 install(TARGETS ${CMAKE_PROJECT_NAME} DESTINATION mpitest)
 
 # Create the worker executable
-add_executable(worker "${CMAKE_SOURCE_DIR}/src/worker.f90")
+add_executable(worker 
+"${CMAKE_SOURCE_DIR}/src/worker.f90"
+"${CMAKE_SOURCE_DIR}/src/bloch_cgeev_mkl.F90"
+)
 
 # Link against MPI Fortran libraries
-target_include_directories(worker PRIVATE ${MPI_Fortran_INCLUDE_PATH})
-target_link_libraries(worker PRIVATE MPI::MPI_Fortran)
+target_include_directories(worker PRIVATE 
+${MPI_Fortran_INCLUDE_PATH}
+${MKL_INCLUDE_DIRS}
+)
+
+set(MKL_LIBRARIES "-lmkl_intel_lp64 -lmkl_core -lmkl_sequential -lpthread -ldl")
+target_link_libraries(worker PRIVATE 
+MPI::MPI_Fortran
+${MKL_LIBRARIES}
+)
 
 # Optionally, install the worker executable
 install(TARGETS worker DESTINATION mpitest)

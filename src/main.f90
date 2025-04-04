@@ -13,7 +13,7 @@ subroutine main(niter, workdir)
     call MPI_Init(ierr)
     do i = 1,niter
         write(*,*) 'Iteration ', i, 'started'
-        call manager(2, 10, workdir)
+        call manager(1, 10, workdir)
         write(*,*) 'Iteration ', i, 'ended'        
     end do
     write(*,*) 'Main is done'
@@ -56,11 +56,11 @@ subroutine manager(nprocs, ntasks, workdir)
     call MPI_BCAST(ntasks, 1, MPI_INTEGER, MPI_ROOT, intercomm, ierr)
     call MPI_BCAST(payload, 5, MPI_INTEGER, MPI_ROOT, intercomm, ierr)    
 
-    allocate(recvbuf(5*ntasks))
+    ! allocate(recvbuf(5*ntasks))
     
-    call MPI_GATHERV(MPI_IN_PLACE,0,MPI_DATATYPE_NULL,recvbuf,counts*5,displs*5,MPI_INTEGER,MPI_ROOT,intercomm,ierr)
+    ! call MPI_GATHERV(MPI_IN_PLACE,0,MPI_DATATYPE_NULL,recvbuf,counts*5,displs*5,MPI_INTEGER,MPI_ROOT,intercomm,ierr)
     ! print *, recvbuf
-    deallocate(counts, displs, payload, recvbuf)
+    deallocate(counts, displs, payload)
     return    
 end subroutine manager
 
