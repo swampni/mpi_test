@@ -42,7 +42,7 @@ program worker
             write(*,*) 'Error in bloch_cgeev: ', mklerr
             stop
         end if
-        write(*,*) 'Worker ', rank, ' of ', size, ' computed eigenvalues: ', eigenvalues
+        ! write(*,*) 'Worker ', rank, ' of ', size, ' computed eigenvalues: ', eigenvalues
         write(*,*) 'deallocate a, b, vector, ugh, eigenvalues'
         deallocate(a, b, vector, ugh, eigenvalues)
         

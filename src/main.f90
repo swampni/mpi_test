@@ -13,7 +13,7 @@ subroutine main(niter, workdir)
     call MPI_Init(ierr)
     do i = 1,niter
         write(*,*) 'Iteration ', i, 'started'
-        call manager(1, 10, workdir)
+        call manager(8, 10, workdir)
         write(*,*) 'Iteration ', i, 'ended'        
     end do
     write(*,*) 'Main is done'

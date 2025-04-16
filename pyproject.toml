@@ -14,3 +14,4 @@ dependencies = ["numpy>=1.21"]
 [tool.scikit-build]
 ninja.version = ">=1.10"
 cmake.version = ">=3.17.2"
+cmake.args = ["-G", "Ninja"]

@@ -1,0 +1,50 @@
+{% set name = "mpitest" %}
+{% set version = "1.0.1" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  path: ..
+
+build:
+  number: 0
+  script: 
+
+  - {{ PYTHON }} -m pip install . -vv 
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('fortran') }}
+    - cmake >=3.17.2
+    - ninja
+    - python                                 # Build dependency
+    - pip
+    
+  host:
+    - python {{ python }}
+    - pip
+    - scikit-build-core >=0.7.0
+    - numpy >=1.26
+    - mkl-devel                 # For MKL headers/libs during build
+    - mpich                                  # Or openmpi, choose one MPI implementation
+  run:
+    - python {{ python }}
+    - numpy >=1.26
+    - mkl                           # MKL runtime
+    - mpich                                 # MPI runtime
+
+# test:
+#   imports:
+#     - mpitest.mpitest                        # Check if the extension module can be imported
+#   commands:
+#     - test -f $PREFIX/bin/worker             # Check if the worker executable exists
+#     # Add a command to run your test.py if feasible within conda-build
+#     # Example: python $RECIPE_DIR/../test.py (might need adjustments)
+
+about:
+  home: # Add your project URL here
+  license: # Add your license here
+  summary: 'Python package wrapping MPI Fortran sources via f2py'
