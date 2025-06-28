@@ -27,8 +27,7 @@ jobs:
         run: |
           # Use git rm to remove the folder from the repository's history on this checkout
           # The --ignore-unmatch flag prevents errors if the file doesn't exist
-          git rm -r --cached --ignore-unmatch src/bloch
-          git rm -r --cached --ignore-unmatch src/cbedp
+          git rm -r --cached --ignore-unmatch makefile
           # You can add more rm lines for other files/folders
 
           # Commit the removal. This commit is temporary for the push.
