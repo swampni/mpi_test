@@ -36,7 +36,7 @@ jobs:
       - name: Push to Public Repository
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.test_TOKEN }}
+          github_token: ${{ secrets.TEST_TEST_TOKEN }}
           repository: swampni/test_test
           branch: main # The branch to push to in the public repo
           force: true # Force push to overwrite the public repo's history
